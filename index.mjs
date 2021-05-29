@@ -115,7 +115,7 @@ const updateCustomOperatorObj = (targetObj, updateObj) => {
       body(Object): Request body params
   @param cache Boolean - Variable to tell XHRFetch to cache or not the request
 */
-export const xhrFetch = (url, options = {}, cache = true) => {
+const xhrFetch = (url, options = {}, cache = true) => {
   const cacheKey = `${url}`;
   const {
     method = 'GET',
@@ -181,7 +181,7 @@ export const xhrFetch = (url, options = {}, cache = true) => {
  * @param {String} userAgent window.navigator.userAgent
  * @returns {Boolean} true or false
  */
-export const isMobile = (userAgent) => {
+const isMobile = (userAgent) => {
   return (
     userAgent.toLowerCase().match(/android/i) ||
     userAgent.toLowerCase().match(/blackberry|bb/i) ||
@@ -196,7 +196,7 @@ export const isMobile = (userAgent) => {
  * @param {String} userAgent window.navigator.userAgent
  * @returns {String} Android/iPhone/iPad/PC
  */
-export const getDevice = (userAgent) => {
+const getDevice = (userAgent) => {
   if (userAgent.toLowerCase().match(/android/i)) {
     return 'Android';
   }
@@ -218,7 +218,7 @@ export const getDevice = (userAgent) => {
  * @param
  * @returns {Boolean} true or false
  */
-export const checkConfig = (config) => {
+const checkConfig = (config) => {
   // fields to validate
   let fields = ['endpointURL', 'dataSource'];
   let optional = ['dataSource'];
@@ -237,8 +237,14 @@ export const checkConfig = (config) => {
  * @param
  * @returns {Object}
  */
-export const getCustomOperatorData = () => {
+const getCustomOperatorData = () => {
   updateCustomOperatorObj(customOperator, window.widgetConfig);
 
   return customOperator;
 }
+
+exports.xhrFetch = xhrFetch;
+exports.isMobile = isMobile
+exports.getDevice = getDevice;
+exports.checkConfig = checkConfig;
+exports.getCustomOperatorData = getCustomOperatorData;
