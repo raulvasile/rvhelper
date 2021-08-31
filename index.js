@@ -11,7 +11,7 @@ const outgoingRequests = {};
 const cacheStore = {};
 const outgoingRequestsParsedBody = {};
 
-window.emWidgets.topic = topic;
+window.emWidgets = { topic };
 
 const resType = 'json';
 

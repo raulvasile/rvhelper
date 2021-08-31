@@ -12,7 +12,7 @@ let subjects = {};
  * @returns Subject | BehaviorSubject | ReplaySubject
  */
 
-function topic(event, type, step) {
+const topic = (event, type, step) => {
   this.event = event;
 
   if (topics.indexOf(event) == -1) {
@@ -51,6 +51,14 @@ function topic(event, type, step) {
     return subjects[event];
   } else {
     return subjects[event];
+  }
+}
+
+const usePostMessageForTopics = (events = [], target) => {
+  for (let index in events) {
+    subjects[events[index]].subscribe((data) => {
+      window.postMessage({ type: events[index], data });
+    });
   }
 }
 

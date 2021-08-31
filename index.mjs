@@ -42,7 +42,7 @@ const storeResponseInCache = (res, cacheKey) => {
   return cacheStore[cacheKey].response;
 }
 
-window.emWidgets.topic = topic;
+window.emWidgets = { topic };
 
 // Internal use only
 const validateFields = (config, required_fields, optional_fields, null_valid, zero_valid, empty_valid) => {
