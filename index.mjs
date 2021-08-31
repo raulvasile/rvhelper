@@ -1,6 +1,8 @@
 'use strict';
 
 import fetch from 'isomorphic-fetch';
+import { topic } from './communication';
+import { _, setupI18n } from './i18n';
 
 const REQUEST_STATUS_SUCCESS = 'success';
 const REQUEST_STATUS_ERROR = 'error';
@@ -10,6 +12,37 @@ const cacheStore = {};
 const outgoingRequestsParsedBody = {};
 
 const resType = 'json';
+
+const getResponseFromCache = (cacheKey) => {
+  return new Promise((resolve, reject) => {
+    if (cacheStore[cacheKey] && cacheStore[cacheKey].response) {
+      return resolve(cacheStore[cacheKey].response);
+    }
+
+    return reject(new Error(`Unable to access cache for: ${cacheStore[cacheKey]}`));
+  });
+}
+
+const checkStatus = (response) => {
+  if (response.status < 200 || response.status >= 400) {
+    // TODO we need a global error handler here
+    throw new Error(`Error on request "${response.url}" (${response.status}: ${response.statusText})`);
+  }
+
+  return response;
+}
+
+const storeResponseInCache = (res, cacheKey) => {
+  delete outgoingRequestsParsedBody[cacheKey];
+
+  cacheStore[cacheKey] = {
+    response: res
+  };
+
+  return cacheStore[cacheKey].response;
+}
+
+window.emWidgets.topic = topic;
 
 // Internal use only
 const validateFields = (config, required_fields, optional_fields, null_valid, zero_valid, empty_valid) => {
@@ -182,7 +215,7 @@ const xhrFetch = (url, options = {}, cache = true) => {
  * @returns {Boolean} true or false
  */
 const isMobile = (userAgent) => {
-  return (
+  return !!(
     userAgent.toLowerCase().match(/android/i) ||
     userAgent.toLowerCase().match(/blackberry|bb/i) ||
     userAgent.toLowerCase().match(/iphone|ipad|ipod/i) ||
@@ -243,8 +276,36 @@ const getCustomOperatorData = () => {
   return customOperator;
 }
 
+// separate favorites array into mobile and desktop favorites
+const platformFavorite = (initialArray, updatedArray) => {
+  let userAgent = window.navigator.userAgent;
+  // make sure to display favored games specific to the platform used
+  if (isMobile(userAgent)) {
+    updatedArray = initialArray.filter(favItem => {
+      if (favItem.gameModel) {
+        if (favItem.gameModel.platform.includes("iPad") || favItem.gameModel.platform.includes("iPhone") || favItem.gameModel.platform.includes("Android")) {
+          return favItem;
+        }
+      }
+    });
+  } else {
+    updatedArray = initialArray.filter(favItem => {
+      if (favItem.gameModel) {
+        if (favItem.gameModel.platform.includes("PC")) {
+          return favItem;
+        }
+      }
+    });
+  }
+  return updatedArray;
+}
+
+
 exports.xhrFetch = xhrFetch;
 exports.isMobile = isMobile
 exports.getDevice = getDevice;
 exports.checkConfig = checkConfig;
 exports.getCustomOperatorData = getCustomOperatorData;
+exports.platformFavorite = platformFavorite;
+exports._ = _;
+exports.setupI18n = setupI18n;

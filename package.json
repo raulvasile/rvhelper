@@ -1,17 +1,17 @@
 {
   "name": "rvhelper",
-  "version": "1.0.2",
+  "version": "1.0.9",
   "description": "Random test",
   "main": "./index.js",
   "exports": {
-      ".": [
-          {
-              "import": "./index.mjs",
-              "require": "./index.js",
-              "default": "./index.js"
-          },
-          "./index.js"
-      ]
+    ".": [
+      {
+        "import": "./index.mjs",
+        "require": "./index.js",
+        "default": "./index.js"
+      },
+      "./index.js"
+    ]
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,6 +19,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "isomorphic-fetch": "^3.0.0"
+    "isomorphic-fetch": "^3.0.0",
+    "rxjs": "^7.3.0",
+    "svelte-i18n": "^3.0.0"
   }
 }
