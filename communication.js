@@ -47,11 +47,9 @@ const topic = (event, type, step) => {
 
         break;
     }
-
-    return subjects[event];
-  } else {
-    return subjects[event];
   }
+
+  return subjects[event];
 }
 
 const usePostMessageForTopics = (events = [], target) => {
