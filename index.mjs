@@ -300,6 +300,23 @@ const platformFavorite = (initialArray, updatedArray) => {
   return updatedArray;
 }
 
+const checkSession = (endpoint, session) => {
+  return new Promise((resolve, reject) => {
+    let reqHeaders = new Headers();
+
+    reqHeaders.append('X-SessionID', session);
+
+    let options = {
+      method: 'GET',
+      headers: reqHeaders
+    };
+
+    fetch(`${endpoint}/player/session/player`, options)
+      .then((res) => res.json())
+      .then((data) => resolve(data))
+      .catch((err) => reject(err));
+  });
+}
 
 exports.xhrFetch = xhrFetch;
 exports.isMobile = isMobile
@@ -309,3 +326,4 @@ exports.getCustomOperatorData = getCustomOperatorData;
 exports.platformFavorite = platformFavorite;
 exports._ = _;
 exports.setupI18n = setupI18n;
+exports.checkSession = checkSession;

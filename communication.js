@@ -1,4 +1,4 @@
-import { Subject, BehaviorSubject, ReplaySubject } from 'rxjs';
+import { ReplaySubject } from 'rxjs';
 
 let topics = [];
 let subjects = {};
@@ -16,7 +16,7 @@ const topic = (event, step = 0) => {
     let replaySubject = new ReplaySubject(step);
 
     subjects[event] = replaySubject;
-    
+
     topics.push(event);
   }
 

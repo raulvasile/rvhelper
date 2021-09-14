@@ -299,3 +299,21 @@ export function platformFavorite(initialArray, updatedArray) {
   }
   return updatedArray;
 }
+
+export function checkSession(endpoint, session) {
+  return new Promise((resolve, reject) => {
+    let reqHeaders = new Headers();
+
+    reqHeaders.append('X-SessionID', session);
+
+    let options = {
+      method: 'GET',
+      headers: reqHeaders
+    };
+
+    fetch(`${endpoint}/player/session/player`, options)
+      .then((res) => res.json())
+      .then((data) => resolve(data))
+      .catch((err) => reject(err));
+  });
+}
